@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This custom metadata stores the mapping of the RESTful services to their respective handler classes.</description>
+    <fields>
+        <fullName>Base_Resource_URI__c</fullName>
+        <description>Stores the relative base resource URI for the REST API e.g. /v1/accounts
+The value must match with the &quot;urlMapping&quot; of the REST API.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Stores the relative base resource URI for the REST API e.g. /v1/accounts
+The value must match with the &quot;urlMapping&quot; of the REST API.</inlineHelpText>
+        <label>Base Resource URI</label>
+        <length>250</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Handler_Class_Name__c</fullName>
+        <description>Name of the handler class for the resource version. This class must extend the RESTHandlerBase class or implement RESTHandler interface.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Name of the handler class for the resource version. This class must extend the RESTHandlerBase class or implement RESTHandler interface.</inlineHelpText>
+        <label>Handler Class Name</label>
+        <length>80</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Is_Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Determines whether the mapping is active or not.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Determines whether the mapping is active or not.</inlineHelpText>
+        <label>Active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Is_Logging_Enabled__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>This flag determines whether to create a web-service log entry for this API or not.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>This flag determines whether to create a web-service log entry for this API or not.</inlineHelpText>
+        <label>Logging Enabled</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>REST Handler Mapping</label>
+    <pluralLabel>REST Handler Mappings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
