@@ -1,0 +1,152 @@
+swagger: "2.0"
+info:
+  description: "This API udpates the status and result on event record in Salesforce."
+  version: "1.0"
+  title: "Update Event"
+host: "sample.my.salesforce.com"
+basePath: "/services/apexrest/v1"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /events:
+    put:
+      description: This API udpates the status and result on event queue record in Salesforce
+      parameters:
+
+      - name: request
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            party:
+              $ref: '#/definitions/Event'
+
+
+      - $ref: "#/parameters/MessageTimestampReqHeader"
+      
+      responses:
+        202:
+          description: Success - Event record updated successfully in salesforce.
+          schema:
+              $ref: '#/definitions/Event'
+
+          headers:
+            message-timestamp:
+              type: string
+              format: date-time
+              description: Request timestamp in UTC.
+          
+          examples:
+            1. Request:
+                {
+                    "event" : {
+                        "event_id" : "a7R0k000000DvxuEAC",
+                        "event_type" : "Party Publish",
+                        "status" : "Completed",
+                        "result" : "Synced Successfully!"
+                    }
+                }  
+                          
+        401:
+          description: Access Denied
+
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Errors'
+          examples:
+            1. Validation Error:
+               {
+                  "errors" : [ {
+                    "status" : "INVALID_REQUEST",
+                    "message" : "Event Id is blank.",
+                  } ]
+                }
+
+        500:
+          description: Internal Server Error (any error while processing the request)
+          schema:
+            $ref: '#/definitions/Errors'
+          examples:
+
+            1.Application Error:
+               {
+                  "errors" : [ {
+                    "status" : "INTERNAL",
+                    "message" : "Update failed.",
+                  } ]
+                }
+
+
+definitions:
+  Event:
+    type: object
+    properties:
+      event_id:
+        type: "string"
+      event_type:
+        type: "string"
+      message_type:
+        type: "string"
+      status:
+        type: "string"
+        description: Possible values - Completed (in case of success), Failed (in case of any error)
+      result:
+        type: "string"
+
+  Errors:
+    type: object
+    properties:
+      errors:
+        type: "array"
+        items:
+              $ref: "#/definitions/Error"
+  Error:
+    type: object
+    properties:
+      status:
+        type: "string"
+      message:
+        type: "string"
+      moreInfo:
+        type: "string"
+      resourceId:
+        type: "string"
+      details:
+        type: object
+        items:
+              $ref: "#/definitions/ErrorDetails"
+
+  ErrorDetails:
+    type: object
+    properties:
+      fieldViolations:
+        type: "array"
+        items:
+              $ref: "#/definitions/FieldViolation"
+              
+  FieldViolation:
+    type: object
+    properties:
+      code:
+        type: "string"
+      fieldName:
+        type: "string"
+      fieldPath:
+        type: "string"
+      description:
+        type: "string"
+  
+parameters:
+  MessageTimestampReqHeader:
+    name: message-timestamp
+    in: header
+    type: string
+    format: string
+    description: Request timestamp in UTC.
+    required: true
