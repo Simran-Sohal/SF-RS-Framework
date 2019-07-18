@@ -1,0 +1,459 @@
+
+
+
+
+
+
+
+
+
+
+
+swagger: "2.0"
+info:
+  description: "Sample Service"
+  version: "1.0"
+  title: "Sample Service"
+host: "localhost"
+basePath: "/v1/sample1"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /parties:
+    post:
+      description: This service is used to do sample1
+      parameters:
+
+      - name: request
+        in: body
+        required: true
+        schema:
+          type: object
+          properties:
+            party:
+              $ref: '#/definitions/RequestType'
+
+
+      - $ref: "#/parameters/MessageTimestampReqHeader"
+      
+      responses:
+        200:
+          description: Success - Sample published successfully.
+          
+          headers:
+            Message-Timestamp:
+              type: string
+              format: date-time
+              description: Request timestamp in UTC.
+          
+          examples:
+            1. Request:
+                {
+                  "party" : {
+                    "trading_name" : "ABC Corp",
+                    "telecoms" : [ {
+                      "telecom_value" : "0212121212",
+                      "telecom_type_code" : "Phone",
+                      "telecom_category_code" : "Biz",
+                      "last_updated_source_system" : "Salesforce"
+                    } ],
+                    "salesforce_id" : "0010k00000t8MRjAAM",
+                    "party_type" : "Organisation",
+                    "party_sub_type" : "Company",
+                    "party_classification" : "Client",
+                    "legal_name" : "ABC Corporation",
+                    "identifiers" : [ {
+                      "id_value" : "0010k00000t8MRjAAM",
+                      "id_type_code" : "SFID",
+                      "id_source_code" : "Salesforce"
+                    } ],
+                    "emails" : [ {
+                      "email_value" : "contact@abccorp.com",
+                      "email_type_code" : "Email",
+                      "email_category_code" : "Email"
+                    } ],
+                    "business_short_name" : "ABCC",
+                    "apra_code_value" : "12345",
+                    "apra_code" : "12345",
+                    "anzsic_value" : "ABCDE",
+                    "anzsic_code" : "ABCDE",
+                    "addresses" : [ {
+                      "suburb" : "Sydney",
+                      "state" : "NSW",
+                      "postcode" : "2000",
+                      "last_updated_source_system" : "Salesforce",
+                      "country" : "Australia",
+                      "address_type_code" : "Mailing",
+                      "address_line1" : "1 Market Street"
+                    } ],
+                    "acn" : "623456789",
+                    "abn" : "16623456789"
+                  },
+                  "event" : {
+                    "event_id" : "a7R0k000000DvxuEAC",
+                    "event_type" : "Party Publish",
+                    "message_type" : "Full"
+                  }
+                }
+                          
+        401:
+          description: Access Denied
+
+        400:
+          description: Bad Request
+
+        500:
+          description: Internal Server Error (any error while processing the request)
+
+
+definitions:
+  RequestType:
+    type: object
+    properties:
+      party:
+        type: object
+        items:
+              $ref: "#/definitions/Party"
+      event:
+        type: object
+        items:
+              $ref: "#/definitions/Event"
+
+  Party:
+    type: object
+    properties:
+      salesforce_id:
+        type: "string"
+      enterprise_id:
+        type: "string"
+      party_type:
+        type: "string"
+      party_status:
+        type: "string"
+      party_name:
+        type: "string"
+      brand_value:
+        type: "string"
+      apra_code:
+        type: "string"
+      apra_code_value:
+        type: "string"
+      title:
+        type: "string"
+      first_name:
+        type: "string"
+      middle_name:
+        type: "string"
+      last_name:
+        type: "string"
+      gender:
+        type: "string"
+      date_of_birth:
+        type: "string"
+      trading_name:
+        type: "string"
+      business_name:
+        type: "string"
+      abn:
+        type: "string"
+      acn:
+        type: "string"
+      business_short_name:
+        type: "string"
+      legal_name:
+        type: "string"
+      company_type:
+        type: "string"
+      business_type:
+        type: "string"
+      anzsic_code:
+        type: "string"
+      anzsic_value:
+        type: "string"
+      trust_name:
+        type: "string"
+      identifiers:
+        type: array
+        items:
+          $ref: "#/definitions/Identifier"
+      macs:
+        type: array
+        items:
+          $ref: "#/definitions/MAC"
+      addresses:
+        type: array
+        items:
+          $ref: "#/definitions/Address"
+      telecoms:
+        type: array
+        items:
+          $ref: "#/definitions/Telecom"
+      emails:
+        type: array
+        items:
+          $ref: "#/definitions/Email"
+      employments:
+        type: array
+        items:
+          $ref: "#/definitions/Employment"
+      party_relationships:
+        type: array
+        items:
+          $ref: "#/definitions/PartyRelationship"
+      merged_parties:
+        type: array
+        items:
+          $ref: "#/definitions/MergedParty"
+
+  Identifier:
+    type: object
+    properties:
+      id_type_code:
+        type: "string"
+      id_type_value:
+        type: "string"
+      id_value:
+        type: "string"
+      id_source_code:
+        type: "string"
+      id_source_value:
+        type: "string"
+      id_source_description:
+        type: "string"
+      end_date:
+        type: "string"
+      id_status:
+        type: "string"
+      
+  MAC:
+    type: object
+    properties:
+      mac_no:
+        type: "string"
+      is_primary:
+        type: "boolean"
+      is_two_factor:
+        type: "boolean"
+
+  Address:
+    type: object
+    properties:
+      address_type_code:
+        type: "string"
+      address_type_value:
+        type: "string"
+      address_category_code:
+        type: "string"
+      address_category_value:
+        type: "string"
+      is_current:
+        type: "boolean"
+      effective_from:
+        type: "string"
+      effective_to:
+        type: "string"
+      is_post_settlement:
+        type: "boolean"
+      is_address_valid:
+        type: "boolean"
+      property_name:
+        type: "string"
+      floor_no:
+        type: "string"
+      po_box_type:
+        type: "string"
+      po_box_no:
+        type: "string"
+      lot_no:
+        type: "string"
+      unit_no:
+        type: "string"
+      street_no:
+        type: "string"
+      street_name:
+        type: "string"
+      street_type:
+        type: "string"
+      address_line1:
+        type: "string"
+      address_line2:
+        type: "string"
+      address_line3:
+        type: "string"
+      address_line4:
+        type: "string"
+      suburb:
+        type: "string"
+      state:
+        type: "string"
+      postcode:
+        type: "string"
+      country:
+        type: "string"
+      delivery_point_id:
+        type: "string"
+      address_value:
+        type: "string"
+      undeliverable_reason:
+        type: "string"
+      is_undeliverable:
+        type: "boolean"
+      created_date_time:
+        type: "string"
+        format: "date-time"
+      created_by:
+        type: "string"
+      updated_date_time:
+        type: "string"
+        format: "date-time"
+      updated_by:
+        type: "string"
+      last_updated_source_system:
+        type: "string"
+
+  Telecom:
+    type: object
+    properties:
+      telecom_id:
+        type: "string"
+      telecom_type_code:
+        type: "string"
+      telecom_type_value:
+        type: "string"
+      telecom_category_code:
+        type: "string"
+      telecom_category_value:
+        type: "string"
+      is_default:
+        type: "boolean"
+      country_code:
+        type: "string"
+      area_code:
+        type: "string"
+      telecom_value:
+        type: "string"
+      is_sms:
+        type: "boolean"
+      is_returned:
+        type: "boolean"
+      is_telecom_valid:
+        type: "boolean"
+      created_date_time:
+        type: "string"
+        format: "date-time"
+      created_by:
+        type: "string"
+      updated_date_time:
+        type: "string"
+        format: "date-time"
+      updated_by:
+        type: "string"
+      last_updated_source_system:
+        type: "string"
+
+  Email:
+    type: object
+    properties:
+      email_id:
+        type: "string"
+      email_type_code:
+        type: "string"
+      email_type_value:
+        type: "string"
+      email_category_code:
+        type: "string"
+      email_category_value:
+        type: "string"
+      is_default:
+        type: "boolean"
+      email_value:
+        type: "string"
+      is_returned:
+        type: "boolean"
+
+  Employment:
+    type: object
+    properties:
+      employee_id:
+        type: "string"
+      employer_name:
+        type: "string"
+      type:
+        type: "string"
+      contract_type:
+        type: "string"
+      is_current_employment:
+        type: "boolean"
+      is_primary_employment:
+        type: "boolean"
+      position:
+        type: "string"
+      occupation_group_code:
+        type: "string"
+      abs_occupation_code:
+        type: "string"
+      is_on_benefits:
+        type: "boolean"
+      is_student:
+        type: "boolean"
+      is_home_duties:
+        type: "boolean"
+      is_on_retirement_benefits:
+        type: "boolean"
+      start_date:
+        type: "string"
+      end_date:
+        type: "string"
+      is_on_probation:
+        type: "boolean"
+  
+  PartyRelationship:
+    type: object
+    properties:
+      related_party_enterprise_id:
+        type: "string"
+      related_party_type:
+        type: "string"
+      related_party_sub_type:
+        type: "string"
+      related_party_role_code:
+        type: "string"
+      related_party_role_value:
+        type: "string"
+      direction:
+        type: "string"
+
+  MergedParty:
+    type: object
+    properties:
+      merged_party_enterprise_id:
+        type: "string"
+
+  Event:
+    type: object
+    properties:
+      event_id:
+        type: "string"
+      event_type:
+        type: "string"
+      message_type:
+        type: "string"
+      status:
+        type: "string"
+      result:
+        type: "string"
+
+
+parameters:
+  MessageTimestampReqHeader:
+    name: Message-Timestamp
+    in: header
+    type: string
+    format: string
+    description: Request timestamp in UTC.
+    required: true
+    
